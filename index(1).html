@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Андрій та Софія | Wedding Invitation</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;300;400;600&family=Playfair+Display:italic,wght@0,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary: #B08D8D;    
+        --accent: #E7C5C6;     
+        --bg-light: #FAF7F2;   
+        --bg-secondary: #E9D8C6; 
+        --text-dark: #5C4A4A;  
+        --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { 
+        font-family: 'Montserrat', sans-serif; 
+        background-color: var(--bg-light); 
+        color: var(--text-dark); 
+        line-height: 1.6; 
+        -webkit-tap-highlight-color: transparent; 
+    }
+
+    /* --- Виправлена Обкладинка --- */
+    #cover-screen {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 1000;
+        background-color: #000;
+        transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        overflow: hidden;
+    }
+
+    #cover-screen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+        object-position: center; 
+        opacity: 0.8;
+    }
+
+    #cover-screen.hide { transform: translateY(-100%); }
+
+    .cover-content {
+        position: absolute;
+        bottom: 50px;
+        left: 0; width: 100%;
+        text-align: center;
+        color: white;
+    }
+
+    /* --- Hero Section (Головна частина) --- */
+    .hero {
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    /* ОСЬ ТУТ ДОДАНО ФОН */
+    .hero-bg {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 1;
+        background: url('photo_5469789715482482691_y.jpg') no-repeat center center;
+        background-size: cover;
+    }
+    
+    .hero-inner { 
+        position: relative;
+        z-index: 2;
+        padding: 30px 20px; 
+        background: rgba(250, 247, 242, 0.95); /* Трохи щільніший фон, щоб текст не зливався з картинкою */
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--accent);
+        width: 85%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .main-title { font-family: 'Cinzel', serif; font-size: 2.2rem; margin: 10px 0; color: var(--text-dark); }
+    .section-title { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--primary); margin-bottom: 30px; text-align: center; }
+
+    /* Таймер */
+    #countdown { display: flex; justify-content: space-around; margin: 20px 0; }
+    .timer-num { display: block; font-size: 2.2rem; color: var(--primary); font-weight: 300; }
+    .timer-label { font-size: 0.7rem; text-transform: uppercase; color: #888; }
+
+    /* Кнопки */
+    .btn {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        padding: 15px; background: var(--primary); color: white;
+        text-decoration: none; border-radius: 50px; font-size: 0.85rem;
+        text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        border: none; margin: 10px 0; width: 100%;
+    }
+    .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+
+    .section-padding { padding: 60px 20px; }
+    .timeline-item { padding: 15px; background: var(--white); border-left: 4px solid var(--accent); margin-bottom: 15px; border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<div id="cover-screen" onclick="openInvitation()">
+    <img src="photo_5469789715482482538_y.jpg" alt="Wedding Cover">
+    <div class="cover-content">
+        <div class="scroll-hint">
+            <i class="fas fa-chevron-up"></i>
+            <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem; margin-top:10px">Натисніть, щоб відкрити</p>
+        </div>
+    </div>
+</div>
+
+<div class="main-content" id="main-content" style="display:none;">
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-inner" data-aos="zoom-in">
+            <p style="font-family: 'Playfair Display'; font-style: italic;" id="guest-greeting">Дорогі гості!</p>
+            <h2 id="guest-name" style="font-family: 'Playfair Display'; font-size: 1.4rem; color: var(--primary); margin-bottom: 5px;">Будемо раді вас бачити!</h2>
+            
+            <h1 class="main-title">Андрій <br>& Софія</h1>
+            <div style="letter-spacing: 3px; border-top: 1px solid var(--accent); border-bottom: 1px solid var(--accent); padding: 5px 0;">05.07.2026</div>
+            <button class="btn btn-outline" style="margin-top: 15px;" onclick="addToCalendar()">
+                <i class="far fa-calendar-plus"></i> В календар
+            </button>
+        </div>
+    </section>
+
+    <section class="section-padding" data-aos="fade-up">
+        <h2 class="section-title">До свята залишилось</h2>
+        <div id="countdown">
+            <div class="timer-box"><span class="timer-num" id="days">00</span><span class="timer-label">днів</span></div>
+            <div class="timer-box"><span class="timer-num" id="hours">00</span><span class="timer-label">год</span></div>
+            <div class="timer-box"><span class="timer-num" id="mins">00</span><span class="timer-label">хв</span></div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background: var(--bg-secondary);">
+        <h2 class="section-title">Програма дня</h2>
+        
+        <div class="timeline-item" data-aos="fade-right">
+            <b style="color: var(--primary);">12:30</b> — Вінчання (церква св. Володимира та Ольги, вул. Жупан, 4А, Винники)
+        </div>
+
+        <div class="timeline-item" data-aos="fade-left">
+            <b style="color: var(--primary);">14:00</b> — Збір гостей
+        </div>
+
+        <div class="timeline-item" data-aos="fade-right">
+            <b style="color: var(--primary);">14:35</b> — Банкет
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <h2 class="section-title">Локація</h2>
+        <div style="text-align: center;">
+            <h3 style="font-family: 'Cinzel'; color: var(--primary);">Soprano Inn</h3>
+            <p style="margin-bottom: 20px;">Чекаємо на вас за цією адресою:</p>
+            <a href="https://maps.app.goo.gl/vq9k8fq2YW3gBU1m7?g_st=ic" class="btn">
+                <i class="fas fa-location-arrow"></i> Прокласти маршрут
+            </a>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background: var(--white);">
+        <h2 class="section-title">Зв'язок</h2>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="https://t.me/pashkovska_sophia" class="btn"><i class="fab fa-telegram-plane"></i> Софія</a>
+            <a href="tel:++380678347900" class="btn btn-outline"><i class="fas fa-phone"></i> Зателефонувати</a>
+            <hr style="margin: 20px 0; border-color: var(--accent);">
+            <a href="https://t.me/@Andriy_rysyk" class="btn"><i class="fab fa-telegram-plane"></i> Андрій</a>
+            <a href="tel:+++380986000758" class="btn btn-outline"><i class="fas fa-phone"></i> Зателефонувати</a>
+        </div>
+        <p style="text-align: center; margin: 20px 0 0; font-weight: 600;">Якщо виникнуть якісь питання чи побажання, звертайтеся.</p>
+    </section>
+
+    <p style="text-align: center; margin: 20px 0; font-weight: 600;">Будь ласка, підтвердіть свою присутність на нашому весіллі до 5 червня, написавши нам, щоб ми могли краще підготуватися до цього особливого дня!</p>
+
+    <footer style="text-align: center; padding: 40px; opacity: 0.6; font-size: 0.8rem;">
+        А & С | 05.07.2026
+    </footer>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+const guestData = {
+    "1": { name: "Мама Іра та Тато Сергій", greeting: "Найрідніші наші батьки" },
+    "2": { name: "Марія та Нестор", greeting: "Дорога бабуся та дідусь" },
+    "3": { name: "Роман та Наталя", greeting: "Наші рідні та близькі серцю" },
+    "4": { name: "Галя та Толік", greeting: "Наші рідні та близькі серцю" },
+    "5": { name: "Аня та Назарко", greeting: "Люба сестро та маленький живчик" },
+    "6": { name: "Василь та Олег", greeting: "Дорогі брати" },
+    "7": { name: "Хресний Микола та Леся", greeting: "Наші рідні та близькі серцю" },
+    "8": { name: "Таня", greeting: "Наша рідна та близька серцю" },
+    "9": { name: "Юра та Марта", greeting: "Друзі, з якими хочеться ділити щастя" },
+    "10": { name: "Ігор та Ніна", greeting: "Наші рідні та близькі серцю" },
+    "11": { name: "Роксолана та Марик", greeting: "Друзі, з якими хочеться ділити щастя" },
+    "12": { name: "Дядько Андрій та Руслана", greeting: "Наші рідні та близькі серцю" },
+    "13": { name: "Ілона та Василь", greeting: "Наші рідні та близькі серцю" },
+    "14": { name: "Хресна Наталя", greeting: "Наші рідні та близькі серцю" },
+    "15": { name: "Nastya and Yasser", greeting: "To someone very special" },
+    "16": { name: "Альона", greeting: "Дорога рідненька дружка" },
+    "17": { name: "Андрій та Ліда", greeting: "Наші рідні та близькі серцю" },
+    "18": { name: "Олег та Христина", greeting: "Друзі, з якими хочеться ділити щастя" },
+    "19": { name: "Софія та Валентин", greeting: "Друзі, з якими хочеться ділити щастя" },
+    "20": { name: "Марія", greeting: "Подруга, з якою хочеться ділити щастя" },
+    "21": { name: "Діана", greeting: "Подруга, з якою хочеться ділити щастя" },
+    "22": { name: "Аріна", greeting: "Подруга, з якою хочеться ділити щастя" },
+    "23": { name: "Мама Оксана та Тато Роман", greeting: "Найрідніші наші батьки" },
+    "24": { name: "Олег та Ірина", greeting: "Наші рідні та близькі серцю" },
+    "25": { name: "Хресна Міля", greeting: "Наші рідні та близькі серцю" },
+    "26": { name: "Ігор та Ірина", greeting: "Наші рідні та близькі серцю" },
+    "27": { name: "Михайло", greeting: "Наші рідні та близькі серцю" },
+    "28": { name: "Ірина та Андрій", greeting: "Наші рідні та близькі серцю" },
+    "29": { name: "Назар", greeting: "Дорогий дружба" },
+    "30": { name: "Ірина та Михайло", greeting: "Наші рідні та близькі серцю" },
+    "31": { name: "Іванна та Остап", greeting: "Наші рідні та близькі серцю" },
+    "32": { name: "Орест та Софія", greeting: "Наші рідні та близькі серцю" },
+    "33": { name: "Галина", greeting: "Наші рідні та близькі серцю" },
+    "34": { name: "Марія та Ігор", greeting: "Наші рідні та близькі серцю" },
+    "35": { name: "Руслан та Юлія", greeting: "Наші рідні та близькі серцю" },
+    "36": { name: "Володимир та Віра", greeting: "Наші рідні та близькі серцю" },
+    "37": { name: "Ольга та Михайло", greeting: "Наші рідні та близькі серцю" },
+    "38": { name: "Андрій та Таня", greeting: "Наші рідні та близькі серцю" },
+    "39": { name: "Христина", greeting: "Наші рідні та близькі серцю" },
+    "40": { name: "Олексій та Ірина", greeting: "Наші рідні та близькі серцю" },
+    "41": { name: "Петро та Алла", greeting: "Друзі, з якими хочеться ділити щастя" },
+    "42": { name: "Степан та Соломія", greeting: "Друзі, з якими хочеться ділити щастя" },
+    "43": { name: "Роман та Василина", greeting: "Друзі, з якими хочеться ділити щастя" },
+    "44": { name: "Ігор та Юля", greeting: "Друзі, з якими хочеться ділити щастя" }
+};
+
+    function initGuest() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        const greetingEl = document.getElementById('guest-greeting');
+        const nameEl = document.getElementById('guest-name');
+
+        if (id && guestData[id]) {
+            greetingEl.innerText = guestData[id].greeting;
+            nameEl.innerText = guestData[id].name;
+        }
+    }
+
+    function openInvitation() {
+        document.getElementById('cover-screen').classList.add('hide');
+        const main = document.getElementById('main-content');
+        main.style.display = 'block';
+        setTimeout(() => {
+            main.style.opacity = '1';
+            AOS.init({ duration: 1000, once: true });
+        }, 100);
+    }
+
+    function addToCalendar() {
+        const url = "https://www.google.com/calendar/render?action=TEMPLATE&text=Весілля+Андрія+та+Софії&dates=20260705T130000Z/20260705T210000Z&location=Soprano+Inn";
+        window.open(url, '_blank');
+    }
+
+    initGuest();
+
+    const countDate = new Date('July 5, 2026 16:00:00').getTime();
+    function countdown() {
+        const now = new Date().getTime();
+        const gap = countDate - now;
+        const second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24;
+        document.getElementById('days').innerText = Math.floor(gap / day);
+        document.getElementById('hours').innerText = Math.floor((gap % day) / hour);
+        document.getElementById('mins').innerText = Math.floor((gap % hour) / minute);
+    }
+    setInterval(countdown, 1000);
+    countdown();
+</script>
+</body>
+</html>
